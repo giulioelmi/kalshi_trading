@@ -72,12 +72,12 @@ def send_order(df):
     }
 
     timestamp_ms = str(int(time.time() * 1000))
-    private_key = _load_private_key(private_key_pem)
+    private_key = _load_private_key(PRIVATE_KEY)
     signature = _sign(private_key, timestamp_ms, "POST", path)
 
     headers = {
         "Content-Type": "application/json",
-        "KALSHI-ACCESS-KEY": key_id,
+        "KALSHI-ACCESS-KEY": KEY_ID,
         "KALSHI-ACCESS-TIMESTAMP": timestamp_ms,
         "KALSHI-ACCESS-SIGNATURE": signature,
     }
