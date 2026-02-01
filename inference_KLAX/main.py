@@ -1,8 +1,9 @@
 from get_data import get_text, normalize_cli_text, extract_cli_yesterday, extract_cli_today, get_forecast, get_markets_data, merge_data, save_results
-from model import feature_engineering, make_prediction, get_ev
+from model import feature_engineering, make_prediction, get_ev, get_model_path
 from create_orders import get_bet_info, send_order
 
-best_model = "/Users/giulioelmi/Desktop/kalshi_trading/inference_KLAX/best1_1.json"
+
+best_model = get_model_path()
 ticker = "KXHIGHLAX"
 office = "LOX"
 grid = "149,41"

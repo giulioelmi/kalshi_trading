@@ -1,9 +1,10 @@
+from pyexpat import model
 import pandas as pd
 import math
 import numpy as np
-
 from xgboost import XGBRegressor
 import xgboost as xgb
+from pathlib import Path
 
 def feature_engineering(df):
     """
@@ -131,3 +132,8 @@ def get_ev(markets: pd.DataFrame, mu: float, sigma: float) -> pd.DataFrame:
         out["buy_no"] = out["edge_no_cents"] > 0
 
     return out
+
+def get_model_path():
+    BASE_DIR = Path(__file__).resolve().parent           # inference_KLAX/
+    MODEL_PATH = BASE_DIR / "best1_1.json"               # inference_KLAX/best1_1.json
+    return MODEL_PATH
