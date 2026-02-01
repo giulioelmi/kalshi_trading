@@ -34,13 +34,12 @@ jobs:
           echo "UTC now:"; date -u
           echo "Pacific now:"; date
           python -c "import time; print('time.tzname:', time.tzname)"
-
       - name: Run script
         env:
           TZ: America/Los_Angeles
-          KALSHI_PRIVATE_KEY: ${{ secrets.KALSHI_PRIVATE_KEY }}
-          # Add any other secrets you use:
-          # OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          # KALSHI_API_KEY: ${{ secrets.KALSHI_API_KEY }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          KEY_ID: ${{ secrets.KEY_ID }}
+          # optional: if you used different secret names:
+          # KALSHI_PRIVATE_KEY: ${{ secrets.KALSHI_PRIVATE_KEY }}
         run: |
           python -u inference_KLAX/main.py
