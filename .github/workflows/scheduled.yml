@@ -4,7 +4,7 @@ on:
   workflow_dispatch: {}
   schedule:
     # Runs every 30 minutes (cron is UTC)
-    - cron: "*/30 * * * *"
+    - cron: "0 5 * * *" 
 
 jobs:
   run:
