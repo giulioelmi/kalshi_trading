@@ -40,4 +40,4 @@ jobs:
           # KALSHI_API_KEY: ${{ secrets.KALSHI_API_KEY }}
           # KALSHI_PRIVATE_KEY: ${{ secrets.KALSHI_PRIVATE_KEY }}
         run: |
-          python inference_KLAX/main/run.py
+          python inference_KLAX/main.py
