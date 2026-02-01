@@ -19,9 +19,6 @@ def _sign(private_key, timestamp_ms: str, method: str, path: str) -> str:
     )
     return base64.b64encode(sig).decode("utf-8")
 
-
-
-
 def get_bet_info(df):
     best_bet = df.loc[df["edge_no_cents"].idxmax()]
     return best_bet
@@ -45,11 +42,13 @@ def _sign(private_key, timestamp_ms: str, method: str, path: str) -> str:
     return base64.b64encode(sig).decode("utf-8")
 
 def send_order(df):
-    load_dotenv()
-    private_key_pem = os.getenv("PRIVATE_KEY")  # PEM text: -----BEGIN PRIVATE KEY-----...
-    key_id = os.getenv("KEY_ID")                # API key ID (uuid-like)
-    if not private_key_pem or not key_id:
-        raise ValueError("Missing PRIVATE_KEY or KEY_ID in .env")
+    load_dotenv()  # loads local .env if present; no-op in GitHub Actions unless you create one
+
+    PRIVATE_KEY = os.getenv("PRIVATE_KEY")
+    KEY_ID = os.getenv("KEY_ID")
+
+    if not PRIVATE_KEY or not KEY_ID:
+        raise ValueError("Missing PRIVATE_KEY or KEY_ID (set as environment variables or in .env)")
 
     best_bet = get_bet_info(df)
     ticker = best_bet["market_ticker"]
