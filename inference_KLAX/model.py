@@ -61,9 +61,6 @@ def make_prediction(df, best_model_path):
 
     return adjusted_forecast
 
-
-
-
 def get_ev(markets: pd.DataFrame, mu: float, sigma: float) -> pd.DataFrame:
     """
     For each Kalshi contract row, compute:
@@ -78,9 +75,6 @@ def get_ev(markets: pd.DataFrame, mu: float, sigma: float) -> pd.DataFrame:
 
     Prices in the input are assumed to be in cents (0..100).
     """
-
-    if sigma <= 0:
-        raise ValueError("sigma must be > 0")
 
     def norm_cdf(x: float) -> float:
         # Standard normal CDF using erf (no scipy dependency)
@@ -121,14 +115,14 @@ def get_ev(markets: pd.DataFrame, mu: float, sigma: float) -> pd.DataFrame:
     out["p_no"] = 1.0 - out["p_yes"]
 
     # Maximum you're willing to pay (in cents)
-    out["max_yes_cents"] = (out["p_yes"]).round(2)
-    out["max_no_cents"] = (out["p_no"]).round(2)
+    out["max_yes_cents"] = ( out["p_yes"])
+    out["max_no_cents"] = ( out["p_no"])
 
     # Compare to current asks (also in cents)
     if "yes_ask" in out.columns:
-        out["edge_yes_cents"] = (out["max_yes_cents"] - out["yes_ask"]).round(2)
+        out["edge_yes_cents"] = (out["max_yes_cents"] - (out["yes_ask"]/100)).round(2)
     if "no_ask" in out.columns:
-        out["edge_no_cents"] = (out["max_no_cents"] - out["no_ask"]).round(2)
+        out["edge_no_cents"] = (out["max_no_cents"] - (out["no_ask"]/100)).round(2)
 
     # Handy boolean suggestions (strictly positive edge)
     if "yes_ask" in out.columns:

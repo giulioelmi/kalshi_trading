@@ -71,7 +71,7 @@ def extract_cli_today(version = 1):
     print("downloading today's report")
     patterns = {
         "DATE": r"CA CLIMATE SUMMARY FOR (\w+ \d{1,2} \d{4})",
-        "TMAX": r"TODAY\s+MAXIMUM\s+(\d+)",
+        "TMAX": r"TODAY\s+MAXIMUM\s+(\d+)", #change to TODAY
         "TMIN": r"MINIMUM\s+(\d+)",
         "PRCP": r"PRECIPITATION\s*\(IN\)\s*TODAY\s+([0-9]+(?:\.[0-9]+)?)",
         "AWND": r"AVERAGE WIND SPEED\s+([\d.]+)",
@@ -101,7 +101,7 @@ def get_forecast(office, grid):
     LAT, LON = 33.94, -118.401
     HEADERS = {"User-Agent": "giulio"}
     URL = f"https://api.weather.gov/gridpoints/{office}/{grid}/forecast/hourly"
-    tomorrow = (dt.date.today() + dt.timedelta(days=1)).isoformat()
+    tomorrow = (dt.date.today() + dt.timedelta(days=1)).isoformat() 
     today = dt.date.today().isoformat()
     r = requests.get(URL, headers=HEADERS)
     periods = r.json()["properties"]["periods"]
@@ -143,14 +143,15 @@ def get_markets_data(ticker):
     markets_data = markets_response.json()
     rows = []
     for market in markets_data['markets']:
-        ticker = market.get("event_ticker")
-        dt = ticker.split("-")[1]
+        event_ticker = market.get("event_ticker")
+        dt = event_ticker.split("-")[1]
         date = datetime.strptime("20" + dt, "%Y%b%d").date()
+        market_ticker = market.get("ticker")
         floor = market.get("floor_strike")
         cap = market.get("cap_strike")
         no_ask = market.get("no_ask")
         yes_ask = market.get("yes_ask")
-        data = {"date": date, "ticker": ticker, "floor": floor, "cap": cap, "no_ask": no_ask, "yes_ask": yes_ask}
+        data = {"date": date, "event_ticker": event_ticker, "market_ticker": market_ticker, "floor": floor, "cap": cap, "no_ask": no_ask, "yes_ask": yes_ask}
         rows.append(data)
     df = pd.DataFrame(rows)
     df["date"] = pd.to_datetime(df["date"])

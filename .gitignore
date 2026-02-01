@@ -1,1 +1,17 @@
 *.csv
+*.json
+*.pem
+.env.*
+.env
+data/
+logs/
+*.log
+
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
