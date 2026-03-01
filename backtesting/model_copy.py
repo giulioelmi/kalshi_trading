@@ -85,17 +85,17 @@ def get_ev(markets: pd.DataFrame, mu: float, sigma: float) -> pd.DataFrame:
         has_cap = pd.notna(cap)
 
         if has_floor and has_cap:
-            # P(floor <= T < cap)
-            z_u = (cap - mu) / sigma
-            z_l = (floor - mu) / sigma
+            # P(TMAX = floor) — continuity correction for integer-valued TMAX
+            z_u = (floor + 0.5 - mu) / sigma
+            z_l = (floor - 0.5 - mu) / sigma
             p = norm_cdf(z_u) - norm_cdf(z_l)
         elif has_floor and not has_cap:
-            # P(T >= floor)
-            z = (floor - mu) / sigma
+            # P(TMAX >= floor) — continuity correction
+            z = (floor - 0.5 - mu) / sigma
             p = 1.0 - norm_cdf(z)
         elif has_cap and not has_floor:
-            # P(T < cap)
-            z = (cap - mu) / sigma
+            # P(TMAX < cap) i.e. P(TMAX <= cap-1) — continuity correction
+            z = (cap - 0.5 - mu) / sigma
             p = norm_cdf(z)
         else:
             # If both missing, cannot interpret the contract
